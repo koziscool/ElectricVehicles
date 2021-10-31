@@ -50,14 +50,23 @@ or_income = get_acs(geography = "zcta",
 
 write.csv(or_income, file='OregonCensusIncome.csv', row.names=F)
 
-########## group by and mutate by zip
+########## joins, group bys and mutates
+
+zip_only = data.frame(or_income$GEOID)
+colnames(zip_only) = "ZipCode"
+
+or_electric_vehicles$ZIP.Code = as.character(or_electric_vehicles$ZIP.Code)
 
 colnames(charging_station_df)
 charging_station_df = charging_station_df %>% 
     add_count(fuel_stations.zip, name = 'Charging.Stations.By.Zip')
   
-colnames(or_electric_vehicles)
 or_electric_vehicles = or_electric_vehicles %>% 
   add_count(ZIP.Code, name = 'EVs.By.Zip')
 
 or_ev_summary = distinct(or_electric_vehicles, ZIP.Code, .keep_all = TRUE)
+or_ev_summary = left_join(zip_only, or_ev_summary, 
+      by = c("ZipCode" = "ZIP.Code"))
+
+or_ev_summary$EVs.By.Zip[is.na(or_ev_summary$EVs.By.Zip)] = 0
+
