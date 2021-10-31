@@ -26,8 +26,8 @@ my_query = list(
 response =  GET(url = url_stub, query = my_query)
 
 text_response = content(response,'text')
-df = fromJSON(text_response, flatten=TRUE ) %>% data.frame()
-df = select(df, 
+charging_station_df = fromJSON(text_response, flatten=TRUE ) %>% data.frame()
+charging_station_df = select(charging_station_df, 
   fuel_stations.city, 
   fuel_stations.state, 
   fuel_stations.zip,
@@ -36,7 +36,7 @@ df = select(df,
   fuel_stations.access_code
   )
 
-write.csv(df, file='OregonChargingStations.csv', row.names=F)
+write.csv(charging_station_df, file='OregonChargingStations.csv', row.names=F)
 
 ########### census data
 
@@ -50,4 +50,16 @@ or_income = get_acs(geography = "zcta",
 
 write.csv(or_income, file='OregonCensusIncome.csv', row.names=F)
 
-##########
+########## joins
+
+income_merge_charging_stations = full_join(
+  or_income, charging_station_df,
+  by = c("GEOID" = "fuel_stations.zip")
+)
+
+or_electric_vehicles$ZIP.Code = as.character(or_electric_vehicles$ZIP.Code)
+
+income_merge_cs_merge_evs = full_join(
+  income_merge_charging_stations, or_electric_vehicles,
+  by = c("GEOID" = "ZIP.Code")
+)
