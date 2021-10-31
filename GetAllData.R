@@ -67,6 +67,9 @@ or_electric_vehicles = or_electric_vehicles %>%
 or_ev_summary = distinct(or_electric_vehicles, ZIP.Code, .keep_all = TRUE)
 or_ev_summary = left_join(zip_only, or_ev_summary, 
       by = c("ZipCode" = "ZIP.Code"))
-
 or_ev_summary$EVs.By.Zip[is.na(or_ev_summary$EVs.By.Zip)] = 0
 
+or_cs_summary = distinct(charging_station_df, fuel_stations.zip, .keep_all = TRUE)
+or_cs_summary = left_join(zip_only, or_cs_summary, 
+                          by = c("ZipCode" = "fuel_stations.zip"))
+or_cs_summary$Charging.Stations.By.Zip[is.na(or_cs_summary$Charging.Stations.By.Zip)] = 0
