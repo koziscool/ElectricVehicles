@@ -50,16 +50,14 @@ or_income = get_acs(geography = "zcta",
 
 write.csv(or_income, file='OregonCensusIncome.csv', row.names=F)
 
-########## joins
+########## group by and mutate by zip
 
-income_merge_charging_stations = full_join(
-  or_income, charging_station_df,
-  by = c("GEOID" = "fuel_stations.zip")
-)
+colnames(charging_station_df)
+charging_station_df = charging_station_df %>% 
+    add_count(fuel_stations.zip, name = 'Charging.Stations.By.Zip')
+  
+colnames(or_electric_vehicles)
+or_electric_vehicles = or_electric_vehicles %>% 
+  add_count(ZIP.Code, name = 'EVs.By.Zip')
 
-or_electric_vehicles$ZIP.Code = as.character(or_electric_vehicles$ZIP.Code)
-
-income_merge_cs_merge_evs = full_join(
-  income_merge_charging_stations, or_electric_vehicles,
-  by = c("GEOID" = "ZIP.Code")
-)
+or_ev_summary = distinct(or_electric_vehicles, ZIP.Code, .keep_all = TRUE)
