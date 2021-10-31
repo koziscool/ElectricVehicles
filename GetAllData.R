@@ -9,19 +9,8 @@ library(readr)
 
 ######## ev registrations
 
-#ZIP Code,VIN Prefix,Registration Expiration Date,VIN Model Year,Make,Model,Model Year
-#read.csv(file = "result1", sep = " ")[ ,c('col1', 'col2')]
-
-#or_electric_vehicles = read.csv("or_ev_registrations_public.csv")[ ,
-#    c('ZIP Code', 
-#      'Registration Expiration Date',
-#      'Make',
-#      'Model',
-#      'Model Year'
-#    )]
-
 or_electric_vehicles = read.csv("or_ev_registrations_public.csv")[ ,
-    c(4, 6, 8, 9, 10) ] 
+    c(3, 4, 6, 8, 9, 10) ] 
 
 ########## charging station data
 
