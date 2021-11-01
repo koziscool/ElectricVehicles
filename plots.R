@@ -6,6 +6,7 @@ library(tidyverse)
 library(tigris)
 library(sf)
 library(readr)
+library(zipcodeR)
 
 ######## ev registrations
 
@@ -110,6 +111,11 @@ ggplot(data = or_join_cs_ev_summary,
        aes(x = EVs.By.Zip, y = Charging.Stations.By.Zip)) +
       geom_point()
 
+cor_ev_cs = cor(or_join_cs_ev_summary$EVs.By.Zip,
+                or_join_cs_ev_summary$Charging.Stations.By.Zip)
+cor_ev_cs
+
+
 or_join_income_ev_summary = inner_join(or_income, or_ev_summary, 
                                    by = c("GEOID" = "ZipCode"))
 
@@ -117,5 +123,8 @@ ggplot(data = or_join_income_ev_summary,
        aes(x = EVs.By.Zip, y = estimate)) +
       geom_point()
 
-
+cor_ev_income = cor(or_join_income_ev_summary$EVs.By.Zip,
+                    or_join_income_ev_summary$estimate,
+                    use="complete.obs")
+cor_ev_income
 
