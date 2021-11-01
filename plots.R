@@ -78,7 +78,7 @@ or_ev_summary$EVs.By.Zip[is.na(or_ev_summary$EVs.By.Zip)] = 0
 evs_with_map = left_join(or_income, or_ev_summary, 
         by = c("GEOID" = "ZipCode")) 
 
-#### plots
+#### mapplots
 
 ggplot(data = cs_with_map, aes(fill=Charging.Stations.By.Zip)) + geom_sf() +
   scale_fill_distiller(
@@ -100,3 +100,22 @@ ggplot(data = or_income, aes(fill=estimate)) + geom_sf() +
     direction = -1
   ) + 
   theme_void()
+
+######## scatterplots
+
+or_join_cs_ev_summary = inner_join(or_ev_summary, or_cs_summary, 
+                        by = "ZipCode")
+
+ggplot(data = or_join_cs_ev_summary, 
+       aes(x = EVs.By.Zip, y = Charging.Stations.By.Zip)) +
+      geom_point()
+
+or_join_income_ev_summary = inner_join(or_income, or_ev_summary, 
+                                   by = c("GEOID" = "ZipCode"))
+
+ggplot(data = or_join_income_ev_summary, 
+       aes(x = EVs.By.Zip, y = estimate)) +
+      geom_point()
+
+
+
