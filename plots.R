@@ -109,7 +109,8 @@ or_join_cs_ev_summary = inner_join(or_ev_summary, or_cs_summary,
 
 ggplot(data = or_join_cs_ev_summary, 
        aes(x = EVs.By.Zip, y = Charging.Stations.By.Zip)) +
-      geom_point()
+      geom_point(size=4) +
+      theme(axis.title = element_text(size = 22))
 
 cor_ev_cs = cor(or_join_cs_ev_summary$EVs.By.Zip,
                 or_join_cs_ev_summary$Charging.Stations.By.Zip)
@@ -121,7 +122,9 @@ or_join_income_ev_summary = inner_join(or_income, or_ev_summary,
 
 ggplot(data = or_join_income_ev_summary, 
        aes(x = EVs.By.Zip, y = estimate)) +
-      geom_point()
+      geom_point(size=4) +
+      labs(y = "Median Income") +
+      theme(axis.title = element_text(size = 22))
 
 cor_ev_income = cor(or_join_income_ev_summary$EVs.By.Zip,
                     or_join_income_ev_summary$estimate,
